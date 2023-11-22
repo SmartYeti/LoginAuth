@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loginauth_web/core/utils/guard.dart';
 import 'package:loginauth_web/features/presentation/pages/forgot.dart';
 import 'package:loginauth_web/features/presentation/pages/home.dart';
 import 'package:loginauth_web/features/presentation/pages/register.dart';
@@ -14,6 +15,8 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  final GlobalKey<FormState> _formKey = GlobalKey();
 
   @override
   Widget build(BuildContext context) {
@@ -59,36 +62,50 @@ class _LoginPageState extends State<LoginPage> {
                             blurRadius: 20.0,
                             offset: Offset(0, 10))
                       ]),
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        padding: const EdgeInsets.all(8.0),
-                        decoration: const BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(
-                                    color: Color.fromRGBO(143, 148, 251, 1)))),
-                        child: TextFormField(
-                          controller: _emailController,
-                          decoration: InputDecoration(
-                              prefixIcon: const Icon(Icons.email),
-                              border: InputBorder.none,
-                              hintText: "Email",
-                              hintStyle: TextStyle(color: Colors.grey[700])),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          padding: const EdgeInsets.all(8.0),
+                          decoration: const BoxDecoration(
+                              border: Border(
+                                  bottom: BorderSide(
+                                      color:
+                                          Color.fromRGBO(143, 148, 251, 1)))),
+                          child: TextFormField(
+                            validator: (String? val) {
+                              return Guard.againstInvalidEmail(val, 'Email');
+                            },
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            controller: _emailController,
+                            decoration: InputDecoration(
+                                prefixIcon: const Icon(Icons.email),
+                                border: InputBorder.none,
+                                hintText: "Email",
+                                hintStyle: TextStyle(color: Colors.grey[700])),
+                          ),
                         ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextFormField(
-                          controller: _passwordController,
-                          obscureText: true,
-                          decoration: InputDecoration(
-                              prefixIcon: const Icon(Icons.lock_open),
-                              border: InputBorder.none,
-                              hintText: "Password",
-                              hintStyle: TextStyle(color: Colors.grey[700])),
-                        ),
-                      )
-                    ],
+                        Container(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextFormField(
+                            validator: (String? val) {
+                              return Guard.againstEmptyString(val, 'Password');
+                            },
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            controller: _passwordController,
+                            obscureText: true,
+                            decoration: InputDecoration(
+                                prefixIcon: const Icon(Icons.lock_open),
+                                border: InputBorder.none,
+                                hintText: "Password",
+                                hintStyle: TextStyle(color: Colors.grey[700])),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(
@@ -120,7 +137,9 @@ class _LoginPageState extends State<LoginPage> {
                     //     context,
                     //     MaterialPageRoute(
                     //         builder: (context) => const HomePage()));
-                    _login(context);
+                    if (_formKey.currentState!.validate()) {
+                      _login(context);
+                    }
                   },
                 ),
                 const SizedBox(height: 10),
@@ -171,7 +190,6 @@ class _LoginPageState extends State<LoginPage> {
     if (response.statusCode == 200) {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => const HomePage()));
-          
     } else {
       print('fail');
     }

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:loginauth_web/core/utils/guard.dart';
 import 'package:loginauth_web/features/presentation/pages/home.dart';
 import 'package:loginauth_web/features/presentation/pages/login.dart';
 import 'package:http/http.dart' as http;
@@ -11,9 +12,21 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
-  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _cpasswordController = TextEditingController();
+
+  final GlobalKey<FormState> _formKey = GlobalKey();
+  // @override
+  // void dispose() {
+  //   super.dispose();
+  //   _emailController.dispose();
+  //   _passwordController.dispose();
+  //   _cpasswordController.dispose();
+  //   _nameController.dispose();
+  // }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,82 +60,109 @@ class _RegisterPageState extends State<RegisterPage> {
                             blurRadius: 20.0,
                             offset: Offset(0, 10))
                       ]),
-                  child: Column(
-                    children: <Widget>[
-                      Container(
-                        padding: const EdgeInsets.all(8.0),
-                        decoration: const BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(
-                                    color: Color.fromRGBO(143, 148, 251, 1)))),
-                        child: TextFormField(
-                          controller: _nameController,
-                          decoration: InputDecoration(
-                              prefixIcon: const Icon(Icons.person),
-                              border: InputBorder.none,
-                              hintText: "Name",
-                              hintStyle: TextStyle(color: Colors.grey[700])),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      children: <Widget>[
+                        Container(
+                          padding: const EdgeInsets.all(8.0),
+                          decoration: const BoxDecoration(
+                              border: Border(
+                                  bottom: BorderSide(
+                                      color:
+                                          Color.fromRGBO(143, 148, 251, 1)))),
+                          child: TextFormField(
+                            validator: (String? val) {
+                              return Guard.againstEmptyString(val, 'Name');
+                            },
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            controller: _nameController,
+                            decoration: InputDecoration(
+                                prefixIcon: const Icon(Icons.person),
+                                border: InputBorder.none,
+                                hintText: "Name",
+                                hintStyle: TextStyle(color: Colors.grey[700])),
+                          ),
                         ),
-                      ),
-                      // Container(
-                      //   padding: const EdgeInsets.all(8.0),
-                      //   decoration: const BoxDecoration(
-                      //       border: Border(
-                      //           bottom: BorderSide(
-                      //               color: Color.fromRGBO(143, 148, 251, 1)))),
-                      //   child: TextFormField(
-                      //     controller: _emailController,
-                      //     decoration: InputDecoration(
-                      //         prefixIcon: const Icon(Icons.person_outline),
-                      //         border: InputBorder.none,
-                      //         hintText: "Last Name",
-                      //         hintStyle: TextStyle(color: Colors.grey[700])),
-                      //   ),
-                      // ),
-                      Container(
-                        padding: const EdgeInsets.all(8.0),
-                        decoration: const BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(
-                                    color: Color.fromRGBO(143, 148, 251, 1)))),
-                        child: TextFormField(
-                          controller: _emailController,
-                          decoration: InputDecoration(
-                              prefixIcon: const Icon(Icons.email),
-                              border: InputBorder.none,
-                              hintText: "Email",
-                              hintStyle: TextStyle(color: Colors.grey[700])),
+                        // Container(
+                        //   padding: const EdgeInsets.all(8.0),
+                        //   decoration: const BoxDecoration(
+                        //       border: Border(
+                        //           bottom: BorderSide(
+                        //               color: Color.fromRGBO(143, 148, 251, 1)))),
+                        //   child: TextFormField(
+                        //     controller: _emailController,
+                        //     decoration: InputDecoration(
+                        //         prefixIcon: const Icon(Icons.person_outline),
+                        //         border: InputBorder.none,
+                        //         hintText: "Last Name",
+                        //         hintStyle: TextStyle(color: Colors.grey[700])),
+                        //   ),
+                        // ),
+                        Container(
+                          padding: const EdgeInsets.all(8.0),
+                          decoration: const BoxDecoration(
+                              border: Border(
+                                  bottom: BorderSide(
+                                      color:
+                                          Color.fromRGBO(143, 148, 251, 1)))),
+                          child: TextFormField(
+                            validator: (String? val) {
+                              return Guard.againstInvalidEmail(val, 'Email');
+                            },
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            controller: _emailController,
+                            decoration: InputDecoration(
+                                prefixIcon: const Icon(Icons.email),
+                                border: InputBorder.none,
+                                hintText: "Email",
+                                hintStyle: TextStyle(color: Colors.grey[700])),
+                          ),
                         ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.all(8.0),
-                        decoration: const BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(
-                                    color: Color.fromRGBO(143, 148, 251, 1)))),
-                        child: TextFormField(
-                          controller: _passwordController,
-                          obscureText: true,
-                          decoration: InputDecoration(
-                              prefixIcon: const Icon(Icons.lock_open),
-                              border: InputBorder.none,
-                              hintText: "Password",
-                              hintStyle: TextStyle(color: Colors.grey[700])),
+                        Container(
+                          padding: const EdgeInsets.all(8.0),
+                          decoration: const BoxDecoration(
+                              border: Border(
+                                  bottom: BorderSide(
+                                      color:
+                                          Color.fromRGBO(143, 148, 251, 1)))),
+                          child: TextFormField(
+                            validator: (String? val) {
+                              return Guard.againstEmptyString(val, 'Password');
+                            },
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            controller: _passwordController,
+                            obscureText: true,
+                            decoration: InputDecoration(
+                                prefixIcon: const Icon(Icons.lock_open),
+                                border: InputBorder.none,
+                                hintText: "Password",
+                                hintStyle: TextStyle(color: Colors.grey[700])),
+                          ),
                         ),
-                      ),
-                      Container(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextFormField(
-                          // controller: _passwordController,
-                          obscureText: true,
-                          decoration: InputDecoration(
-                              prefixIcon: const Icon(Icons.lock),
-                              border: InputBorder.none,
-                              hintText: "Confirm Password",
-                              hintStyle: TextStyle(color: Colors.grey[700])),
-                        ),
-                      )
-                    ],
+                        Container(
+                          padding: const EdgeInsets.all(8.0),
+                          child: TextFormField(
+                            autovalidateMode:
+                                AutovalidateMode.onUserInteraction,
+                            controller: _cpasswordController,
+                            obscureText: true,
+                            decoration: InputDecoration(
+                                prefixIcon: const Icon(Icons.lock),
+                                border: InputBorder.none,
+                                hintText: "Confirm Password",
+                                hintStyle: TextStyle(color: Colors.grey[700])),
+                            validator: (String? val) {
+                              return Guard.againstNotMatch(
+                                  val, _passwordController.text, 'Password');
+                            },
+                          ),
+                        )
+                      ],
+                    ),
                   ),
                 ),
                 const SizedBox(
@@ -144,7 +184,10 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                   onPressed: () {
-                    _register(context);
+                    if (_formKey.currentState!.validate()) {
+                      _register(context);
+                      // dispose();
+                    }
                   },
                 ),
                 const SizedBox(height: 10),

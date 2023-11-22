@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -40,7 +41,7 @@ class _HomePageState extends State<HomePage> {
                   ),
                 ),
                 Container(
-                   padding: const EdgeInsets.all(5),
+                  padding: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
                       color: Colors.white,
                       borderRadius: BorderRadius.circular(10),
@@ -52,44 +53,67 @@ class _HomePageState extends State<HomePage> {
                             blurRadius: 20.0,
                             offset: Offset(0, 10))
                       ]),
-                   child: const Icon(Icons.home, 
-                   color: Color.fromRGBO(143, 148, 251, 1),)
-                  // child: Column(
-                  //   children: <Widget>[
-                  //     // Container(
-                  //     //   padding: const EdgeInsets.all(8.0),
-                  //     //   decoration: const BoxDecoration(
-                  //     //       border: Border(
-                  //     //           bottom: BorderSide(
-                  //     //               color: Color.fromRGBO(143, 148, 251, 1)))),
-                  //     //   child: TextFormField(
-                  //     //     controller: _emailController,
-                  //     //     decoration: InputDecoration(
-                  //     //         prefixIcon: const Icon(Icons.email),
-                  //     //         border: InputBorder.none,
-                  //     //         hintText: "Email",
-                  //     //         hintStyle: TextStyle(color: Colors.grey[700])),
-                  //     //   ),
-                  //     // ),
-                  //     // Container(
-                  //     //   padding: const EdgeInsets.all(8.0),
-                  //     //   child: TextFormField(
-                  //     //     controller: _passwordController,
-                  //     //     obscureText: true,
-                  //     //     decoration: InputDecoration(
-                  //     //         prefixIcon: const Icon(Icons.lock_open),
-                  //     //         border: InputBorder.none,
-                  //     //         hintText: "Password",
-                  //     //         hintStyle: TextStyle(color: Colors.grey[700])),
-                  //     //   ),
-                  //     // )
-                  //   ],
-                  // ),
+                  //  child: const Icon(Icons.home,
+                  //  color: Color.fromRGBO(143, 148, 251, 1),)
+
+                  child: const Column(
+                    
+                    children: <Widget>[
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Icon(
+                          Icons.home,
+                          color: Color.fromRGBO(143, 148, 251, 1),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(8.0),
+                        child: Icon(
+                          Icons.power_settings_new_rounded,
+                          color: Color.fromRGBO(143, 148, 251, 1),
+                        ),
+                      ),
+                      // IconButton(
+                      //   onPressed: _logout, 
+                      // icon: Icon(Icons.power_settings_new_rounded),
+                      // )
+
+                      // Container(
+                      //   padding: const EdgeInsets.all(8.0),
+                      //   decoration: const BoxDecoration(
+                      //       border: Border(
+                      //           bottom: BorderSide(
+                      //               color: Color.fromRGBO(143, 148, 251, 1)))),
+                      //   child: TextFormField(
+                      //     // controller: _emailController,
+                      //     decoration: InputDecoration(
+                      //         prefixIcon: const Icon(Icons.email),
+                      //         border: InputBorder.none,
+                      //         hintText: "Email",
+                      //         hintStyle: TextStyle(color: Colors.grey[700])),
+                      //   ),
+                      // ),
+                      // Container(
+                      //   padding: const EdgeInsets.all(8.0),
+                      //   child: TextFormField(
+                      //     // controller: _passwordController,
+                      //     obscureText: true,
+                      //     decoration: InputDecoration(
+                      //         prefixIcon: const Icon(Icons.lock_open),
+                      //         border: InputBorder.none,
+                      //         hintText: "Password",
+                      //         hintStyle: TextStyle(color: Colors.grey[700])),
+                      //   ),
+                      // )
+                    ],
+                    
+                  ),
                   
-                // ),
-                // const SizedBox(
-                //   height: 30,
-                // ),
+                ),
+               
+                const SizedBox(
+                  height: 30,
+                ),
                 // ElevatedButton(
                 //   style: ElevatedButton.styleFrom(
                 //       backgroundColor: const Color.fromRGBO(143, 148, 251, 1),
@@ -113,7 +137,7 @@ class _HomePageState extends State<HomePage> {
                 //   ),
                 //   onPressed: () {},
                 // ),
-                // const SizedBox(height: 10),
+                const SizedBox(height: 10),
                 // TextButton(
                 //   onPressed: () {},
                 //   child: const Text(
@@ -134,12 +158,25 @@ class _HomePageState extends State<HomePage> {
                 //       color: Color.fromRGBO(143, 148, 251, 1)
                 //     ),
                 //   ),
-                 ),
+                //  ),
               ],
             ),
           ),
         ),
       ),
     );
+  }
+
+  _logout(BuildContext context) async {
+    var url = Uri.http('127.0.0.1:8000', 'api/loout');
+    var response = await http.post(url, body: {});
+    print(response.statusCode);
+    print(response.body);
+    if (response.statusCode == 200) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => const HomePage()));
+    } else {
+      print('fail');
+    }
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:loginauth_web/features/presentation/pages/home.dart';
 import 'package:loginauth_web/features/presentation/pages/login.dart';
+import 'package:http/http.dart' as http;
 
 class RegisterPage extends StatefulWidget {
   const RegisterPage({super.key});
@@ -10,6 +11,7 @@ class RegisterPage extends StatefulWidget {
 }
 
 class _RegisterPageState extends State<RegisterPage> {
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   @override
@@ -54,29 +56,29 @@ class _RegisterPageState extends State<RegisterPage> {
                                 bottom: BorderSide(
                                     color: Color.fromRGBO(143, 148, 251, 1)))),
                         child: TextFormField(
-                          controller: _emailController,
+                          controller: _nameController,
                           decoration: InputDecoration(
                               prefixIcon: const Icon(Icons.person),
                               border: InputBorder.none,
-                              hintText: "First Name",
+                              hintText: "Name",
                               hintStyle: TextStyle(color: Colors.grey[700])),
                         ),
                       ),
-                      Container(
-                        padding: const EdgeInsets.all(8.0),
-                        decoration: const BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(
-                                    color: Color.fromRGBO(143, 148, 251, 1)))),
-                        child: TextFormField(
-                          controller: _emailController,
-                          decoration: InputDecoration(
-                              prefixIcon: const Icon(Icons.person_outline),
-                              border: InputBorder.none,
-                              hintText: "Last Name",
-                              hintStyle: TextStyle(color: Colors.grey[700])),
-                        ),
-                      ),
+                      // Container(
+                      //   padding: const EdgeInsets.all(8.0),
+                      //   decoration: const BoxDecoration(
+                      //       border: Border(
+                      //           bottom: BorderSide(
+                      //               color: Color.fromRGBO(143, 148, 251, 1)))),
+                      //   child: TextFormField(
+                      //     controller: _emailController,
+                      //     decoration: InputDecoration(
+                      //         prefixIcon: const Icon(Icons.person_outline),
+                      //         border: InputBorder.none,
+                      //         hintText: "Last Name",
+                      //         hintStyle: TextStyle(color: Colors.grey[700])),
+                      //   ),
+                      // ),
                       Container(
                         padding: const EdgeInsets.all(8.0),
                         decoration: const BoxDecoration(
@@ -114,8 +116,7 @@ class _RegisterPageState extends State<RegisterPage> {
                           // controller: _passwordController,
                           obscureText: true,
                           decoration: InputDecoration(
-                              prefixIcon:
-                                  const Icon(Icons.lock),
+                              prefixIcon: const Icon(Icons.lock),
                               border: InputBorder.none,
                               hintText: "Confirm Password",
                               hintStyle: TextStyle(color: Colors.grey[700])),
@@ -131,9 +132,7 @@ class _RegisterPageState extends State<RegisterPage> {
                   style: ElevatedButton.styleFrom(
                       backgroundColor: const Color.fromRGBO(143, 148, 251, 1),
                       shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10))
-                      
-                      ),
+                          borderRadius: BorderRadius.circular(10))),
                   child: const SizedBox(
                     height: 50,
                     child: Center(
@@ -145,10 +144,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
                   onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const HomePage()));
+                    _register(context);
                   },
                 ),
                 const SizedBox(height: 10),
@@ -181,5 +177,22 @@ class _RegisterPageState extends State<RegisterPage> {
         ),
       ),
     );
+  }
+
+  _register(BuildContext context) async {
+    var url = Uri.http('127.0.0.1:8000', 'api/register');
+    var response = await http.post(url, body: {
+      'name': _nameController.text,
+      'email': _emailController.text,
+      'password': _passwordController.text
+    });
+    print(response.statusCode);
+    print(response.body);
+    if (response.statusCode == 200) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => const HomePage()));
+    } else {
+      print('fail');
+    }
   }
 }

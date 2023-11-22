@@ -1,33 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:loginauth_web/features/presentation/pages/forgot.dart';
-import 'package:loginauth_web/features/presentation/pages/home.dart';
-import 'package:loginauth_web/features/presentation/pages/register.dart';
+import 'package:loginauth_web/features/presentation/pages/login.dart';
 
-class LoginPage extends StatefulWidget {
-  const LoginPage({super.key});
+class ForgotPage extends StatefulWidget {
+  const ForgotPage({super.key});
 
   @override
-  State<LoginPage> createState() => _LoginPageState();
+  State<ForgotPage> createState() => _ForgotPageState();
 }
 
-class _LoginPageState extends State<LoginPage> {
-  final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _passwordController = TextEditingController();
-
+class _ForgotPageState extends State<ForgotPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // appBar: AppBar(
-      //   automaticallyImplyLeading: false,
-      //   titleTextStyle: const TextStyle(
-      //     fontSize: 30,
-      //     fontWeight: FontWeight.bold,
-      //     color: Colors.white
-      //     ),
-      //     title: const Center(child: Text('Login')),
-      //     backgroundColor: Colors.black,
-      // ),
-
+      
       body: Container(
         alignment: Alignment.center,
         child: SizedBox(
@@ -40,7 +25,7 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(
                   height: 100,
                   child: Text(
-                    "Login",
+                    "Find your email",
                     style: TextStyle(
                         color: Color.fromRGBO(143, 148, 251, 1), fontSize: 50),
                   ),
@@ -62,12 +47,12 @@ class _LoginPageState extends State<LoginPage> {
                     children: <Widget>[
                       Container(
                         padding: const EdgeInsets.all(8.0),
-                        decoration: const BoxDecoration(
-                            border: Border(
-                                bottom: BorderSide(
-                                    color: Color.fromRGBO(143, 148, 251, 1)))),
+                        // decoration: const BoxDecoration(
+                        //     border: Border(
+                        //         bottom: BorderSide(
+                        //             color: Color.fromRGBO(143, 148, 251, 1)))),
                         child: TextFormField(
-                          controller: _emailController,
+                          // controller: _emailController,
                           decoration: InputDecoration(
                               prefixIcon: const Icon(Icons.email),
                               border: InputBorder.none,
@@ -75,18 +60,18 @@ class _LoginPageState extends State<LoginPage> {
                               hintStyle: TextStyle(color: Colors.grey[700])),
                         ),
                       ),
-                      Container(
-                        padding: const EdgeInsets.all(8.0),
-                        child: TextFormField(
-                          controller: _passwordController,
-                          obscureText: true,
-                          decoration: InputDecoration(
-                              prefixIcon: const Icon(Icons.lock_open),
-                              border: InputBorder.none,
-                              hintText: "Password",
-                              hintStyle: TextStyle(color: Colors.grey[700])),
-                        ),
-                      )
+                      // Container(
+                      //   padding: const EdgeInsets.all(8.0),
+                      //   child: TextFormField(
+                      //     controller: _passwordController,
+                      //     obscureText: true,
+                      //     decoration: InputDecoration(
+                      //         prefixIcon: const Icon(Icons.lock_open),
+                      //         border: InputBorder.none,
+                      //         hintText: "Password",
+                      //         hintStyle: TextStyle(color: Colors.grey[700])),
+                      //   ),
+                      // )
                     ],
                   ),
                 ),
@@ -108,7 +93,7 @@ class _LoginPageState extends State<LoginPage> {
                     height: 50,
                     child: Center(
                       child: Text(
-                        "Login",
+                        "Next",
                         style: TextStyle(
                             color: Colors.white, fontWeight: FontWeight.bold),
                       ),
@@ -116,10 +101,10 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   onPressed: () {
                     
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const HomePage()));
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => const HomePage()));
 
 
                   },
@@ -130,10 +115,10 @@ class _LoginPageState extends State<LoginPage> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => const ForgotPage()));
+                            builder: (context) => const LoginPage()));
                   },
                   child: const Text(
-                    "Forgot Password?",
+                    "Cancel",
                     style: TextStyle(color: Color.fromRGBO(143, 148, 251, 1)),
                   ),
                 ),
@@ -141,20 +126,20 @@ class _LoginPageState extends State<LoginPage> {
                 const SizedBox(
                   height: 5,
                 ),
-                TextButton(
-                  onPressed: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const RegisterPage()));
-                  },
-                  child: const Text(
-                    "Register",
-                    style: TextStyle(
-                      color: Color.fromRGBO(143, 148, 251, 1)
-                    ),
-                  ),
-                ),
+                // TextButton(
+                //   onPressed: () {
+                //     Navigator.push(
+                //         context,
+                //         MaterialPageRoute(
+                //             builder: (context) => const RegisterPage()));
+                //   },
+                //   child: const Text(
+                //     "Register",
+                //     style: TextStyle(
+                //       color: Color.fromRGBO(143, 148, 251, 1)
+                //     ),
+                //   ),
+                // ),
               ],
             ),
           ),

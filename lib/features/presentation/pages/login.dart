@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:loginauth_web/features/presentation/pages/forgot.dart';
 import 'package:loginauth_web/features/presentation/pages/home.dart';
 import 'package:loginauth_web/features/presentation/pages/register.dart';
+import 'package:http/http.dart' as http;
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -115,13 +116,11 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   onPressed: () {
-                    
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const HomePage()));
-
-
+                    // Navigator.push(
+                    //     context,
+                    //     MaterialPageRoute(
+                    //         builder: (context) => const HomePage()));
+                    _login(context);
                   },
                 ),
                 const SizedBox(height: 10),
@@ -150,9 +149,7 @@ class _LoginPageState extends State<LoginPage> {
                   },
                   child: const Text(
                     "Register",
-                    style: TextStyle(
-                      color: Color.fromRGBO(143, 148, 251, 1)
-                    ),
+                    style: TextStyle(color: Color.fromRGBO(143, 148, 251, 1)),
                   ),
                 ),
               ],
@@ -161,5 +158,22 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  _login(BuildContext context) async {
+    var url = Uri.http('127.0.0.1:8000', 'api/login');
+    var response = await http.post(url, body: {
+      'email': _emailController.text,
+      'password': _passwordController.text
+    });
+    print(response.statusCode);
+    print(response.body);
+    if (response.statusCode == 200) {
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => const HomePage()));
+          
+    } else {
+      print('fail');
+    }
   }
 }
